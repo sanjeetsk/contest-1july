@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+// App.js
 
-function App() {
+import React, {useEffect} from 'react';
+import { connect } from 'react-redux';
+import { fetchProducts } from './actions/productActions';
+import { Route, Routes, BrowserRouter } from 'react-router-dom';
+import Home from './component/Home';
+import Mycart from './component/Mycart';
+import Navbar from './component/Navbar';
+
+
+const App = ({fetchProducts}) => {
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="/my-cart" element={<Mycart />} />
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
-export default App;
+export default connect(null, { fetchProducts })(App);
